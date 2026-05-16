@@ -8,6 +8,22 @@ services:
         fromDatabase:
           name: cesde-db
           property: connectionString
+      - key: DB_JDBC_URL
+        fromDatabase:
+          name: cesde-db
+          property: jdbcUrl
+      - key: DB_HOST
+        fromDatabase:
+          name: cesde-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: cesde-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: cesde-db
+          property: database
       - key: DB_USERNAME
         fromDatabase:
           name: cesde-db
