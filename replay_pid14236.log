@@ -6039,7 +6039,6 @@ instanceKlass com/sun/org/apache/xerces/internal/util/XMLChar
 instanceKlass com/sun/xml/internal/stream/Entity
 instanceKlass com/sun/xml/internal/stream/util/BufferAllocator
 instanceKlass com/sun/xml/internal/stream/util/ThreadLocalBufferAllocator
-instanceKlass com/sun/org/apache/xerces/internal/impl/XMLEntityManager$EncodingInfo
 instanceKlass com/sun/org/apache/xerces/internal/utils/XMLLimitAnalyzer
 instanceKlass com/sun/org/apache/xerces/internal/xni/parser/XMLInputSource
 instanceKlass com/sun/org/apache/xerces/internal/util/ErrorHandlerWrapper
@@ -6114,7 +6113,6 @@ instanceKlass com/sun/org/apache/xerces/internal/util/AugmentationsImpl
 instanceKlass com/sun/org/apache/xerces/internal/xni/Augmentations
 instanceKlass com/sun/org/apache/xerces/internal/util/XMLResourceIdentifierImpl
 instanceKlass com/sun/org/apache/xerces/internal/xni/XMLResourceIdentifier
-instanceKlass com/sun/org/apache/xerces/internal/impl/XMLEntityManager
 instanceKlass com/sun/org/apache/xerces/internal/xni/parser/XMLEntityResolver
 instanceKlass com/sun/org/apache/xerces/internal/xni/parser/XMLComponent
 instanceKlass com/sun/org/apache/xerces/internal/util/SymbolTable$Entry
@@ -8275,7 +8273,6 @@ instanceKlass org/eclipse/core/internal/resources/ContentDescriptionManager$Lazy
 instanceKlass java/io/ObjectInputStream
 instanceKlass org/eclipse/core/internal/localstore/SafeChunkyInputStream
 instanceKlass org/eclipse/core/internal/registry/BufferedRandomInputStream
-instanceKlass com/sun/org/apache/xerces/internal/impl/XMLEntityManager$RewindableInputStream
 instanceKlass org/eclipse/osgi/storage/url/reference/ReferenceInputStream
 instanceKlass java/util/jar/JarVerifier$VerifierStream
 instanceKlass java/util/zip/ZipFile$ZipFileInputStream
