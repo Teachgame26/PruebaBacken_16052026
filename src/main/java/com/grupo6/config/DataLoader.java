@@ -18,51 +18,62 @@ public class DataLoader {
     ) {
         return args -> {
 
-            // ========================
-            // 👨‍🏫 PROFESORES
-            // ========================
-            Profesor p1 = new Profesor();
-            p1.setNombre("Carlos Pérez");
-            p1.setEmail("carlos@uni.com");
+            // Evita duplicar datos
+            if (
+                profesorRepo.count() == 0 &&
+                estudianteRepo.count() == 0 &&
+                materiaRepo.count() == 0
+            ) {
 
-            Profesor p2 = new Profesor();
-            p2.setNombre("Ana Gómez");
-            p2.setEmail("ana@uni.com");
+                // ========================
+                // 👨‍🏫 PROFESORES
+                // ========================
+                Profesor p1 = new Profesor();
+                p1.setNombre("Carlos Pérez");
+                p1.setEmail("carlos@uni.com");
 
-            profesorRepo.saveAll(List.of(p1, p2));
+                Profesor p2 = new Profesor();
+                p2.setNombre("Ana Gómez");
+                p2.setEmail("ana@uni.com");
 
-            // ========================
-            // 👨‍🎓 ESTUDIANTES
-            // ========================
-            Estudiante e1 = crearEst("Juan", "juan@uni.com", p1);
-            Estudiante e2 = crearEst("Maria", "maria@uni.com", p1);
-            Estudiante e3 = crearEst("Luis", "luis@uni.com", p1);
-            Estudiante e4 = crearEst("Sofia", "sofia@uni.com", p2);
-            Estudiante e5 = crearEst("Pedro", "pedro@uni.com", p2);
+                profesorRepo.saveAll(List.of(p1, p2));
 
-            estudianteRepo.saveAll(List.of(e1, e2, e3, e4, e5));
+                // ========================
+                // 👨‍🎓 ESTUDIANTES
+                // ========================
+                Estudiante e1 = crearEst("Juan", "juan@uni.com", p1);
+                Estudiante e2 = crearEst("Maria", "maria@uni.com", p1);
+                Estudiante e3 = crearEst("Luis", "luis@uni.com", p1);
+                Estudiante e4 = crearEst("Sofia", "sofia@uni.com", p2);
+                Estudiante e5 = crearEst("Pedro", "pedro@uni.com", p2);
 
-            // ========================
-            // 📚 MATERIAS
-            // ========================
-            Materia m1 = crearMateria("Matemáticas");
-            Materia m2 = crearMateria("Historia");
-            Materia m3 = crearMateria("Biología");
-            Materia m4 = crearMateria("Física");
-            Materia m5 = crearMateria("Literatura");
-            Materia m6 = crearMateria("Geografía");
+                estudianteRepo.saveAll(List.of(e1, e2, e3, e4, e5));
 
-            materiaRepo.saveAll(List.of(m1, m2, m3, m4, m5, m6));
+                // ========================
+                // 📚 MATERIAS
+                // ========================
+                Materia m1 = crearMateria("Matemáticas");
+                Materia m2 = crearMateria("Historia");
+                Materia m3 = crearMateria("Biología");
+                Materia m4 = crearMateria("Física");
+                Materia m5 = crearMateria("Literatura");
+                Materia m6 = crearMateria("Geografía");
 
-            // ========================
-            // 🔗 RELACIONES (OPCIONAL)
-            // ========================
-            // Ejemplo: asignar materias a profesores
+                materiaRepo.saveAll(List.of(m1, m2, m3, m4, m5, m6));
 
-            p1.setMaterias(List.of(m1, m2, m4)); // Carlos
-            p2.setMaterias(List.of(m3, m5, m6)); // Ana
+                // ========================
+                // 🔗 RELACIONES
+                // ========================
+                p1.setMaterias(List.of(m1, m2, m4));
+                p2.setMaterias(List.of(m3, m5, m6));
 
-            profesorRepo.saveAll(List.of(p1, p2));
+                profesorRepo.saveAll(List.of(p1, p2));
+
+                System.out.println("Datos iniciales cargados correctamente.");
+            } else {
+
+                System.out.println("Los datos ya existen. No se insertaron duplicados.");
+            }
         };
     }
 
