@@ -1,60 +1,79 @@
-package com.grupo6.model.entity;
+package com.grupo6.controller;
+
+import com.grupo6.model.entity.Estudiante;
+import com.grupo6.model.entity.Profesor;
+import com.grupo6.service.ProfesorService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.*;
+@Tag(name = "Profesores", description = "Gestion de profesores y sus estudiantes asignados")
+@RestController
+@RequestMapping("/profesores")
+public class ProfesorController {
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+    private final ProfesorService service;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+    public ProfesorController(ProfesorService service) {
+        this.service = service;
+    }
 
-@Schema(description = "Estudiante registrado en Teach Game")
-@Entity
-@Table(name = "estudiantes")
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
-public class Estudiante {
+    @Operation(summary = "Listar profesores", description = "Obtiene todos los profesores registrados en el sistema.")
+    @ApiResponse(responseCode = "200", description = "Listado de profesores consultado correctamente")
+    @GetMapping
+    public List<Profesor> listar() {
+        return service.obtenerTodos();
+    }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(
-        description = "Identificador unico del estudiante",
-        example = "1",
-        accessMode = Schema.AccessMode.READ_ONLY
-    )
-    private Long id;
+    @Operation(summary = "Obtener profesor por ID", description = "Busca un profesor por su identificador unico.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Profesor encontrado"),
+            @ApiResponse(responseCode = "404", description = "Profesor no encontrado", content = @Content)
+    })
+    @GetMapping("/{id}")
+    public Profesor obtener(
+            @Parameter(description = "ID numerico del profesor", example = "1", required = true)
+            @PathVariable Long id) {
+        return service.obtenerPorId(id);
+    }
 
-    @Column
-    @Schema(
-        description = "Nombre completo del estudiante",
-        example = "Laura Martinez",
-        requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    private String nombre;
+    @Operation(summary = "Crear profesor", description = "Registra un nuevo profesor en Teach Game.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Profesor creado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Datos del profesor invalidos", content = @Content)
+    })
+    @PostMapping
+    public Profesor crear(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Datos del profesor a registrar",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = Profesor.class))
+            )
+            @RequestBody Profesor profesor) {
+        return service.guardar(profesor);
+    }
 
-    @Column
-    @Schema(
-        description = "Correo electronico del estudiante",
-        example = "laura.martinez@teachgame.edu",
-        requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    private String email;
-
-    // Relación con materias
-    @ManyToMany(mappedBy = "estudiantes")
-    @JsonIgnore
-    @Schema(description = "Materias en las que esta inscrito el estudiante")
-    private List<Materia> materias;
-
-    // Relación con profesor
-    @ManyToOne
-    @JoinColumn(name = "profesor_id")
-    @JsonBackReference
-    @Schema(description = "Profesor asignado al estudiante")
-    private Profesor profesor;
-
+    @Operation(summary = "Listar estudiantes de un profesor", description = "Obtiene los estudiantes asignados a un profesor especifico.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Estudiantes del profesor consultados correctamente"),
+            @ApiResponse(responseCode = "404", description = "Profesor no encontrado", content = @Content)
+    })
+    @GetMapping("/{id}/estudiantes")
+    public List<Estudiante> obtenerEstudiantes(
+            @Parameter(description = "ID numerico del profesor", example = "1", required = true)
+            @PathVariable Long id) {
+        return service.obtenerEstudiantesPorProfesor(id);
+    }
 }
