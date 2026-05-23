@@ -13,11 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Usuario {
-    
-    // RELACIÓN CON PROFESORES
-    @OneToMany(mappedBy = "usuario")
-    @JsonManagedReference
-    private List<Profesor> profesores;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
