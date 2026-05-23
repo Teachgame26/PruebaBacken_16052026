@@ -2,12 +2,14 @@ package com.grupo6.model.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.util.List;
 
@@ -53,7 +55,6 @@ public class Profesor {
     // Relación con materias
     @ManyToMany(mappedBy = "profesores")
     @JsonIgnore
-
     @Schema(description = "Materias dictadas por el profesor")
     private List<Materia> materias;
 
