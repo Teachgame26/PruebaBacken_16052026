@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.List;
@@ -17,43 +19,47 @@ import java.util.List;
 @Data
 public class Profesor {
 
-    // @JsonBackReference- se agrega para dejar el codigo mas limpio
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(
+        description = "Identificador unico del profesor",
+        example = "1",
+        accessMode = Schema.AccessMode.READ_ONLY
+    )
+    private Long id;
 
+    @Column
+    @Schema(
+        description = "Nombre completo del profesor",
+        example = "Carlos Ramirez",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String nombre;
 
-    @OneToMany(mappedBy = "profesor")
-    @JsonManagedReference
-    private List<Materia> materias;
+    @Column
+    @Schema(
+        description = "Correo electronico del profesor",
+        example = "carlos.ramirez@teachgame.edu",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String email;
 
-
-
-    // @JsonManagedReference 
-
+    // Relación con usuario
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     @JsonBackReference
     private Usuario usuario;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "Identificador unico del profesor", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
-    private Long id;
-
-    
-    // @SuppressWarnings("unused")
-    @Column
-    @Schema(description = "Nombre completo del profesor", example = "Carlos Ramirez", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String nombre;
-    // @SuppressWarnings("unused")
-    @Column
-    @Schema(description = "Correo electronico del profesor", example = "carlos.ramirez@teachgame.edu", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String email;
-
+    // Relación con materias
     @ManyToMany(mappedBy = "profesores")
+    @JsonManagedReference
     @Schema(description = "Materias dictadas por el profesor")
     private List<Materia> materias;
 
+    // Relación con estudiantes
     @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL)
+    @JsonManagedReference
     @Schema(description = "Estudiantes asignados al profesor")
     private List<Estudiante> estudiantes;
 
-    
+}
