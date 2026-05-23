@@ -46,7 +46,7 @@ public class Estudiante {
 
     // Relación con materias
     @ManyToMany(mappedBy = "estudiantes")
-    @JsonBackReference
+    @JsonIgnore
     @Schema(description = "Materias en las que esta inscrito el estudiante")
     private List<Materia> materias;
 

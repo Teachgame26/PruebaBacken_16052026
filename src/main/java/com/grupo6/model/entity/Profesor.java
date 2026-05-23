@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.List;
@@ -52,7 +52,8 @@ public class Profesor {
 
     // Relación con materias
     @ManyToMany(mappedBy = "profesores")
-    @JsonManagedReference
+    @JsonIgnore
+
     @Schema(description = "Materias dictadas por el profesor")
     private List<Materia> materias;
 
