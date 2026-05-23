@@ -18,7 +18,6 @@ Por esta razón, Teach Game propone una solución sencilla que permita a los pro
 
 - Crear actividades interactivas.
 - Integrar contenido multimedia.
-- Organizar sus clases de manera estructurada.
 - Facilitar el aprendizaje mediante herramientas digitales accesibles.
 
 ### Breve descripción del dominio / temática del proyecto integrador
@@ -56,6 +55,7 @@ proyecto-teach-game-grupo-6/
 │ └── java/com/grupo6/ ← Tests unitarios e integración
 ├── pom.xml ← Dependencias Maven
 └── README.md
+└── render.yaml
 
 
 
@@ -152,7 +152,8 @@ Estas funcionalidades podrán agregarse en versiones futuras.
 - Git
 - GitHub
 - Maven
-- Postman
+- Scalar
+- Render
 - Lombok
 
 ---
@@ -161,7 +162,7 @@ Estas funcionalidades podrán agregarse en versiones futuras.
 
 | Nombre | Rol principal | Usuario GitHub |
 |------|------|------|
-| Paola Arizmendy | Líder / Backend | @PaolaArizmendy |
+| Paola Arismendy | Líder / Backend | @PaolaArismendy |
 | Mayerlin Cubides | Frontend Lead | @Ined2011 |
 | Johana Peña | Backend / Base de datos | @Johaph3728 |
 
@@ -226,7 +227,7 @@ Lesson **N ─── 1** Subject
 
 ### Resource (Recurso Multimedia)
 
-Representa recursos educativos asociados a una clase, como videos, audios o documentos.
+Representa recursos educativos asociados a un link seguro externo.
 
 **Atributos**
 
@@ -268,7 +269,9 @@ Incluye:
 - Atributos clave
 - Relaciones entre entidades
 
-![Diagrama de Dominio v1](docs/diagrama-dominio-v1.png)
+![Diagrama de Dominio v1](docs/diagrama-dominio-v1.png) 
+
+# pendiente subir el correcto de py
 
 *Diagrama inicial del modelo de dominio – versión 1.*
 
@@ -291,7 +294,7 @@ Incluye:
 ### 1. Clonar repositorio
 
 ```bash
-git clone https://github.com/Teachgame26/proyecto-teach-game-grupo-6.git
+git clone https://github.com/Teachgame26/PruebaBacken_16052026.git
 cd proyecto-teach-game-grupo-6
 
 
