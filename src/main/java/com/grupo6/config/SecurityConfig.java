@@ -27,69 +27,77 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            // Deshabilita CSRF para APIs REST
-            .csrf(csrf -> csrf.disable())
+                // Deshabilitar CSRF
+                .csrf(csrf -> csrf.disable())
 
-            // Configuración de permisos
-            .authorizeHttpRequests(auth -> auth
+                // Configuración de permisos
+                .authorizeHttpRequests(auth -> auth
 
-                // Rutas públicas
-                .requestMatchers(
-                    "/api-docs/**",
-                    "/swagger-ui/**",
-                    "/swagger-ui.html",
-                    "/scalar/**",
-                    "/index.html",
-                    "/"
-                ).permitAll()
+                        // Swagger / Scalar públicos
+                        .requestMatchers(
+                                "/",
+                                "/index.html",
+                                "/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/scalar/**"
+                        ).permitAll()
 
-                // GET -> USER y ADMIN
-                .requestMatchers(HttpMethod.GET, "/estudiantes/**")
-                    .hasAnyRole("ADMIN", "USER")
+                        // =========================
+                        // GET -> ADMIN y USER
+                        // =========================
+                        .requestMatchers(HttpMethod.GET,
+                                "/usuarios",
+                                "/usuarios/**",
+                                "/estudiantes",
+                                "/estudiantes/**",
+                                "/profesores",
+                                "/profesores/**",
+                                "/materias",
+                                "/materias/**"
+                        ).hasAnyRole("ADMIN", "USER")
 
-                .requestMatchers(HttpMethod.GET, "/profesores/**")
-                    .hasAnyRole("ADMIN", "USER")
+                        // =========================
+                        // POST -> SOLO ADMIN
+                        // =========================
+                        .requestMatchers(HttpMethod.POST,
+                                "/usuarios",
+                                "/usuarios/**",
+                                "/estudiantes",
+                                "/estudiantes/**",
+                                "/profesores",
+                                "/profesores/**",
+                                "/materias",
+                                "/materias/**"
+                        ).hasRole("ADMIN")
 
-                .requestMatchers(HttpMethod.GET, "/materias/**")
-                    .hasAnyRole("ADMIN", "USER")
+                        // =========================
+                        // PUT -> SOLO ADMIN
+                        // =========================
+                        .requestMatchers(HttpMethod.PUT, "/**")
+                        .hasRole("ADMIN")
 
-                .requestMatchers(HttpMethod.GET, "/usuarios/**")
-                    .hasAnyRole("ADMIN", "USER")
+                        // =========================
+                        // DELETE -> SOLO ADMIN
+                        // =========================
+                        .requestMatchers(HttpMethod.DELETE, "/**")
+                        .hasRole("ADMIN")
 
-                // POST -> SOLO ADMIN
-                .requestMatchers(HttpMethod.POST, "/estudiantes/**")
-                    .hasRole("ADMIN")
+                        // =========================
+                        // PATCH -> SOLO ADMIN
+                        // =========================
+                        .requestMatchers(HttpMethod.PATCH, "/**")
+                        .hasRole("ADMIN")
 
-                .requestMatchers(HttpMethod.POST, "/profesores/**")
-                    .hasRole("ADMIN")
+                        // Cualquier otra petición autenticada
+                        .anyRequest().authenticated()
+                )
 
-                .requestMatchers(HttpMethod.POST, "/materias/**")
-                    .hasRole("ADMIN")
+                // CORS
+                .cors(Customizer.withDefaults())
 
-                .requestMatchers(HttpMethod.POST, "/usuarios/**")
-                    .hasRole("ADMIN")
-
-                // PUT -> SOLO ADMIN
-                .requestMatchers(HttpMethod.PUT, "/**")
-                    .hasRole("ADMIN")
-
-                // DELETE -> SOLO ADMIN
-                .requestMatchers(HttpMethod.DELETE, "/**")
-                    .hasRole("ADMIN")
-
-                // PATCH -> SOLO ADMIN
-                .requestMatchers(HttpMethod.PATCH, "/**")
-                    .hasRole("ADMIN")
-
-                // Cualquier otra petición requiere autenticación
-                .anyRequest().authenticated()
-            )
-
-            // Habilitar CORS
-            .cors(Customizer.withDefaults())
-
-            // Habilitar Basic Auth
-            .httpBasic(Customizer.withDefaults());
+                // Basic Auth
+                .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
@@ -113,7 +121,7 @@ public class SecurityConfig {
         return new InMemoryUserDetailsManager(admin, user);
     }
 
-    // Encriptador de contraseñas
+    // Encriptador
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -125,13 +133,11 @@ public class SecurityConfig {
 
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // Permitir frontend local
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:5173",
                 "http://localhost:3000"
         ));
 
-        // Métodos permitidos
         configuration.setAllowedMethods(Arrays.asList(
                 "GET",
                 "POST",
@@ -141,12 +147,13 @@ public class SecurityConfig {
                 "OPTIONS"
         ));
 
-        // Headers permitidos
         configuration.setAllowedHeaders(Arrays.asList(
                 "Authorization",
-                "Cache-Control",
-                "Content-Type"
+                "Content-Type",
+                "Cache-Control"
         ));
+
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
