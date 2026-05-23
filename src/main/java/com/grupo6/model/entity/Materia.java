@@ -5,10 +5,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.util.List;
 
-// import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Schema(description = "Materia academica disponible en Teach Game")
 @Entity
@@ -45,6 +45,12 @@ public class Materia {
     )
     @Schema(description = "Estudiantes inscritos en la materia")
     private List<Estudiante> estudiantes;
+
+    @ManyToOne
+    @JoinColumn(name = "profesor_id")
+    @JsonBackReference
+    private Profesor profesor;
+
 
     // public void setNombre(String nombre2) {
     //     // TODO Auto-generated method stub

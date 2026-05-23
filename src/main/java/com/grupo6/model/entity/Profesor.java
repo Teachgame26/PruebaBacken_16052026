@@ -5,11 +5,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.List;
-
-// import com.fasterxml.jackson.annotation.JsonBackReference;
-// import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Schema(description = "Profesor registrado en Teach Game")
 @Entity
@@ -19,8 +17,22 @@ import java.util.List;
 @Data
 public class Profesor {
 
-    // @JsonBackReference
-    // @JsonManagedReference
+    // @JsonBackReference- se agrega para dejar el codigo mas limpio
+
+
+    @OneToMany(mappedBy = "profesor")
+    @JsonManagedReference
+    private List<Materia> materias;
+
+
+
+    // @JsonManagedReference 
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    @JsonBackReference
+    private Usuario usuario;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(description = "Identificador unico del profesor", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
@@ -44,26 +56,4 @@ public class Profesor {
     @Schema(description = "Estudiantes asignados al profesor")
     private List<Estudiante> estudiantes;
 
-    // public List<Estudiante> getEstudiantes() {
-    //     // TODO Auto-generated method stub
-        
-    //     throw new UnsupportedOperationException("Unimplemented method 'getEstudiantes'");
-    // }
-
-    // public void setNombre(String string) {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'setNombre'");
-    // }
-
-    // public void setEmail(String string) {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'setEmail'");
-    // }
-
-    // public void setMaterias(List<Materia> of) {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'setMaterias'");
-    // }
-
-    // // Getters y Setters
-}
+    
